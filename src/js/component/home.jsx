@@ -1,25 +1,44 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+
+const API_KEY= 'rZnLT6QGSPRElrHZXpuzi5WB913YgZtr'
+
 
 //create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
+
+	const [gifs, setGifs]= useState([])
+	
+
+	const getGifs=({keyword='rick'}={})=> {
+		const REQUEST_URL = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=25&offset=0&rating=g&lang=en`
+	
+		fetch(REQUEST_URL)
+			.then(res =>res.json())
+			.then(response => {
+				const {data} = response
+				const gifs = data.map(image=>{
+					const {images, title, id}= image
+					const {url}=images.downsized
+					return {title, id, url, images}
+				}
+				
+				)
+				
+				setGifs(gifs)
+				console.log(gifs)
+		})
+	};
+
+	useEffect( ()=>{getGifs({keyword:'morty'})},[]);
+			
+			
+	return (<div className="container">
+				<div className="d-flex flex-row overflow-scroll p-3">
+					{gifs.map(singleGif=><img src={singleGif.url}/>)}
+				</div>
+			</div>
+		
 	);
 };
 
