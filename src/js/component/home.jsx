@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-
+import Gif from "./gif.jsx"
 
 const API_KEY= 'rZnLT6QGSPRElrHZXpuzi5WB913YgZtr'
 
@@ -30,12 +30,17 @@ const Home = () => {
 		})
 	};
 
-	useEffect( ()=>{getGifs({keyword:'morty'})},[]);
+	useEffect( ()=>{getGifs({keyword:'john-wick'})},[]);
 			
 			
 	return (<div className="container">
 				<div className="d-flex flex-row overflow-scroll p-3">
-					{gifs.map(singleGif=><img src={singleGif.url}/>)}
+					{
+						gifs.map(({id, title, url})=><Gif 
+							key={id}
+							title={title} 
+							url={url}/>)
+					}
 				</div>
 			</div>
 		
