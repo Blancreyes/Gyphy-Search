@@ -9,12 +9,12 @@ const Home = () => {
 
 	const [gifs, setGifs]= useState([])
 	const [keyword, setKeyword]=useState("")
-	let findgif=""
+	
 
 
 	const handleSubmit=(e)=>{
 		e.preventDefault()
-		findgif=getGifs({keyword})
+		getGifs=getGifs({keyword})
 	}
 
 
@@ -22,7 +22,7 @@ const Home = () => {
 		setKeyword(e.target.value)
 	}
 	
-	const getGifs=({keyword='rick'}={})=> {
+	const getGifs=({})=> {
 		const REQUEST_URL = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=25&offset=0&rating=g&lang=en`
 	
 		fetch(REQUEST_URL)
@@ -42,24 +42,24 @@ const Home = () => {
 		})
 	};
 
-	useEffect( ()=>{findgif},[handleSubmit]);
+	useEffect( ()=>{getGifs},[handleSubmit]);
 			
 			
 	return (
 		<div className="container">
 			<form onSubmit={handleSubmit}>
-				<label htmlFor="search">SearchGif</label>
+				<label htmlFor="search" className="p-3">SearchGif</label>
 				<input 
 					type="text"
 					value={keyword} 
 					onChange={handleChange}
 					
 				/>
-				<button>SEARCH</button>
+				<button className="ms-1">SEARCH</button>
 
 			</form>
 				
-			<div className="d-flex flex-row overflow-scroll p-3">
+			<div className="d-flex flex-row overflow-scroll p-1">
 				{
 					gifs.map(({id, title, url})=><Gif 
 						key={id}
